@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Register Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <form id="registerForm">
+        <h2>Student Register Portal</h2>
+        <input type="text" id="usn" placeholder="Enter USN" required>
+        <input type="password" id="code" placeholder="Enter 6-digit Code" maxlength="6" required>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const usn = document.getElementById('usn').value.trim();
+    const code = document.getElementById('code').value.trim();
+
+    if (!usn || code.length !== 6) {
+        alert("Please enter valid details!");
+        return;
+    }
+
+    try {
+        // Call the load check API
+        const response = await fetch('http://localhost:3001/checkLoad'); // Update with your backend API endpoint
+        const data = await response.json();
+
+        if (response.status === 503) {
+            alert(data.message); // Show error when auto-scaling is off
+        } else {
+            // Redirect if access allowed
+            window.location.href = `/results.html?usn=${usn}`;
+        }
+    } catch (error) {
+        alert("Error connecting to the server. Please try again later.");
+        console.error(error);
+    }
+});
+
+    </script>
+</body>
+</html>

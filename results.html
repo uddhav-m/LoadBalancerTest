@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        button {
+            background: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Results</h2>
+        <p id="usnDisplay"></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody id="resultTable">
+                <!-- Result rows will be populated here -->
+            </tbody>
+        </table>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        // Get USN from query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const usn = urlParams.get('usn');
+
+        // Display USN
+        document.getElementById('usnDisplay').innerText = `Results for USN: ${usn}`;
+
+        // Mock data for results
+        const results = {
+            "18CS101": [
+                { subject: "Mathematics", marks: 85 },
+                { subject: "Physics", marks: 78 },
+                { subject: "Computer Science", marks: 92 }
+            ],
+            "18CS102": [
+                { subject: "Mathematics", marks: 75 },
+                { subject: "Physics", marks: 68 },
+                { subject: "Computer Science", marks: 81 }
+            ]
+        };
+
+        // Fetch results for the entered USN
+        const studentResults = results[usn] || [];
+
+        // Populate results table
+        const resultTable = document.getElementById('resultTable');
+        if (studentResults.length) {
+            studentResults.forEach(result => {
+                const row = `<tr><td>${result.subject}</td><td>${result.marks}</td></tr>`;
+                resultTable.innerHTML += row;
+            });
+        } else {
+            resultTable.innerHTML = `<tr><td colspan="2">No results found!</td></tr>`;
+        }
+
+        // Go back function
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
